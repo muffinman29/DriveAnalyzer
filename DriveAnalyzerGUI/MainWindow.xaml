@@ -1,0 +1,52 @@
+﻿<Window x:Class="DriveAnalyzerGUI.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:DriveAnalyzerGUI"
+        mc:Ignorable="d"
+        Title="Drive Analyzer" Height="500" Width="817">
+    <Grid>
+        <Label x:Name="lblFilePath" Content="Root Path:" Margin="10,10,730,0" VerticalAlignment="Top"/>
+        <TextBox x:Name="tbFilePath" HorizontalAlignment="Left" Height="23" Margin="79,13,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="260" IsEnabled="False"/>
+        <Button x:Name="btnBrowse" Content="Browse" HorizontalAlignment="Left" Margin="344,14,0,0" VerticalAlignment="Top" Width="135" Click="btnBrowse_Click"/>
+        <DataGrid x:Name="dgFiles" Margin="10,41,10,45" ItemsSource="{Binding AllFiles}" AutoGenerateColumns="False" IsReadOnly="True">
+            <DataGrid.Resources>
+                <local:RangeToBooleanConverter x:Key="conv"></local:RangeToBooleanConverter>
+            </DataGrid.Resources>
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Path" Binding="{Binding Key}">
+                </DataGridTextColumn>
+                <DataGridTextColumn Header="Size (in bytes)" Binding="{Binding Value, StringFormat=\{0:N\}}">
+                    <DataGridTextColumn.ElementStyle>
+                        <Style TargetType="{x:Type TextBlock}">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding Value, Converter={StaticResource conv}}" Value="True" >
+                                    <Setter Property="Background" Value="Red"></Setter>
+                                    <Setter Property="FontWeight" Value="Bold"></Setter>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </DataGridTextColumn.ElementStyle>
+                </DataGridTextColumn>
+            </DataGrid.Columns>
+            <DataGrid.ContextMenu>
+                <ContextMenu>
+                    <MenuItem Header="Open File" Click="OpenFileItem_Click"></MenuItem>
+                    <MenuItem Header="Open Containing Folder" Click="OpenContainingFolderItem_Click"></MenuItem>
+                    <MenuItem Header="Delete File" Click="DeleteFileItem_Click"></MenuItem>
+                </ContextMenu>
+            </DataGrid.ContextMenu>
+        </DataGrid>
+        <Button x:Name="btnScan" Content="Scan" HorizontalAlignment="Left" Margin="484,14,0,0" VerticalAlignment="Top" Width="103" Click="btnScan_Click"/>
+        <Button x:Name="btnDeleteSelected" Content="Delete Selected" Margin="592,14,10,0" VerticalAlignment="Top" Click="btnDeleteSelected_Click"/>
+        <StatusBar Margin="10,0,10,10" Height="30" VerticalAlignment="Bottom">
+            <StatusBarItem Content="" Name="sbiProgress" HorizontalAlignment="Left" Width="370">               
+            </StatusBarItem>
+            <StatusBarItem HorizontalAlignment="Right" Width="335">
+                <ProgressBar IsIndeterminate="True" Name="prgProgress" Height="20" Width="325" Visibility="Hidden"></ProgressBar>
+            </StatusBarItem>
+        </StatusBar>
+
+    </Grid>
+</Window>
