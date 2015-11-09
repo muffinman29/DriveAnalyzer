@@ -34,7 +34,7 @@ namespace DriveAnalyzerGUI
         {
             var dialog = new FolderBrowserDialog();
             var result = dialog.ShowDialog();
-            if (result == System.Windows.Forms.DialogResult.OK && !string.IsNullOrEmpty(tbFilePath.Text.Trim()))
+            if (result == System.Windows.Forms.DialogResult.OK)
             {
                 tbFilePath.Text = dialog.SelectedPath;
             }
